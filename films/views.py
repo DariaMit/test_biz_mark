@@ -2,13 +2,12 @@ from django.contrib.auth import logout, login
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
-from django.http import HttpResponse, HttpResponseNotFound, Http404
-from django.shortcuts import render, redirect, get_object_or_404
-# from django.urls import reverse_lazy
+from django.http import Http404
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import CreateView
 
-from .forms import AddReviewForm, RegisterForm
+from .forms import AddReviewForm
 from .models import Film, Genre, Reviews
 
 menu = [
@@ -56,12 +55,12 @@ menu = [
 
 def index(request):
     films = Film.objects.all()
-    for film in films:
-        marks = list(map(lambda x: x.rating, Reviews.objects.filter(film_id=film.id)))
-        if marks:
-            film.rating = sum(marks)//len(marks)
-        else:
-            film.rating = 0
+    # for film in films:
+    #     marks = list(map(lambda x: x.rating, Reviews.objects.filter(film_id=film.id)))
+    #     if marks:
+    #         film.rating = sum(marks)//len(marks)
+    #     else:
+    #         film.rating = 0
 
     if request.method == 'POST':
         if request.POST.get('sort_by'):
@@ -125,6 +124,7 @@ def show_genre(request, genre_slug):
 def show_film(request, genre_slug, film_slug):
     film = Film.objects.filter(slug=film_slug)[0]
     reviews = Reviews.objects.filter(film_id=film.id)
+    print(film.rating)
     context = {
         'menu': menu,
         'film': film,
@@ -145,9 +145,12 @@ def leave_review(request, film_slug):
         review = Reviews(review_text=text, user_id=request.user.id, film_title=film_title, rating=rating, film_id=film_id)
         try:
             review.save()
-            return redirect('profile')
         except Exception:
             print('ошибка')
+        all_film_marks = list(map(lambda x: x.rating, Reviews.objects.filter(film_id=film.id)))
+        total_film_rating = sum(all_film_marks) // len(all_film_marks) if all_film_marks else 0
+        Film.objects.filter(id=film_id).update(rating=total_film_rating)
+        return redirect('profile')
     else:
         form = AddReviewForm()
         print(form)
