@@ -12,12 +12,3 @@ urlpatterns = [
     path('<slug:genre_slug>/', show_genre, name='genre'),
     path('<slug:genre_slug>/<slug:film_slug>', show_film, name='film'),
 ]
-# urlpatterns = [
-#     path('', NatureHome.as_view(), name='home'),
-#     path('about/', about, name='about'),
-#     path('add_page/', AddPage.as_view(), name='add_page'),
-#     path('contact/', contact, name='contact'),
-#     path('login/', login, name='login'),
-#     path('post/<slug:post_slug>/', ShowPost.as_view(), name='post'),
-#     path('category/<slug:cat_slug>/', ShowCategory.as_view(), name='category'),
-# ]

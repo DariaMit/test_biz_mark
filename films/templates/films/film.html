@@ -21,10 +21,6 @@
 <h2>Галлерея</h2>
 {% for img in film.gallery_images.all %}
 <p><img src="{{img.image.url}}" height="200"> </p>
-<!--<div>-->
-<!--<p>Галлерея</p>-->
-<!--<p><img class="img-article-left" src="{{film.gallery_photos.url}}" height="130"> </p>-->
-<!--</div>-->
 {% endfor %}
     {% endif %}
 

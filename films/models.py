@@ -24,9 +24,6 @@ class Film(models.Model):
     genre = models.ForeignKey(Genre, on_delete=models.PROTECT)
     rating = models.IntegerField(default=0)
 
-    # film1 = Film(title='Reservoir Dogs', production_date='1991-10-8', slug='reservoir-dogs', actors='Tim Roth, Stive Bushemi', director='Quentin Tarantino', genre_id=1)
-    # film2 = Film(title='The Big Lebowski', production_date='2013-3-28', slug='the-big-lebowski', actors='Jeff Bridges, Stive Bushemi', director='Joel Coen, Ethan Coen', genre_id=2)
-
     def __str__(self):
         return self.title
 

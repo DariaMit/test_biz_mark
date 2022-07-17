@@ -15,53 +15,8 @@ menu = [
         ]
 
 
-# class NatureHome(ListView):
-#     model = Nature
-#     template_name = 'nature/index.html'
-#     context_object_name = 'posts'
-#     # extra_context = {'title': 'Главная страница'}
-
-# def get_context_data(self, *, object_list=None, **kwargs):
-#     context = super().get_context_data(**kwargs)
-#     context['menu'] = menu
-#     context['title'] = 'Главная страница!'
-#     context['cat_selected'] = 0
-#     return context
-#
-# def get_queryset(self):
-#     return Nature.objects.filter(is_published=True)
-
-
-# class FilmsIndex(ListView):
-#     paginate_by = 25
-#     model = Film
-#     template_name = 'films/index.html'
-#     context_object_name = 'films'
-#     # extra_context = {'title': 'Главная страница'}
-#
-#     def get_context_data(self, *, object_list=None, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         print(context)
-#         print('reqiestt!')
-#         print(self.request)
-#         # context['films'] = films
-#         context['menu'] = menu
-#         # context['title'] = 'Каталог фильмов'
-#         context['genre_selected'] = 0
-#         return context
-#
-#     def get_queryset(self):
-#         return Film.objects.all()
-
 def index(request):
     films = Film.objects.all()
-    # for film in films:
-    #     marks = list(map(lambda x: x.rating, Reviews.objects.filter(film_id=film.id)))
-    #     if marks:
-    #         film.rating = sum(marks)//len(marks)
-    #     else:
-    #         film.rating = 0
-
     if request.method == 'POST':
         if request.POST.get('sort_by'):
             sorting = request.POST['sort_by']
@@ -91,13 +46,8 @@ def profile(request):
     return render(request, 'films/profile.html', context=context)
 
 
-# def show_genre(request, genre_slug):
-#     return HttpResponse(f'<h1>Жанры фильмов</h1><p>{genre_slug}</p>')
-
 def show_genre(request, genre_slug):
     genre = Genre.objects.filter(slug=genre_slug)
-
-
     if len(genre) == 0:
         raise Http404
 
@@ -117,7 +67,6 @@ def show_genre(request, genre_slug):
         'page_obj': page_obj,
         'genre_slug': genre_slug
     }
-
     return render(request, 'films/index.html', context=context)
 
 
@@ -155,37 +104,12 @@ def leave_review(request, film_slug):
         form = AddReviewForm()
         print(form)
 
-
     context = {
         'form': form,
         'film_slug': film_slug
     }
     return render(request, 'films/leave_review.html', context=context)
 
-
-# def login(request):
-#     pass
-
-
-# def register(request):
-#     if request.method == 'POST':
-#         form = RegisterForm(request.POST, request.FILES)
-#         username = request.POST['username']
-#         password = request.POST['password']
-#         try:
-#             user = User(username=username, password=password)
-#             user.save()
-#             return redirect('profile')
-#         except:
-#             print('ошибка')
-#     else:
-#         form = RegisterForm()
-#         print(form)
-
-    # context = {
-    #     'form': form
-    # }
-    # return render(request, 'films/register.html', context=context)
 
 class RegisterUser(CreateView):
     form_class = UserCreationForm
@@ -212,6 +136,7 @@ class LoginUser(LoginView):
 
     def get_success_url(self):
         return reverse_lazy('profile')
+
 
 def logout_user(request):
     logout(request)

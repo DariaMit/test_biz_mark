@@ -6,6 +6,7 @@ class GalleryInline(admin.TabularInline):
     fk_name = 'film'
     model = Gallery
 
+
 class FilmsAdmin(admin.ModelAdmin):
     inlines = [GalleryInline,]
     list_display = ('id', 'title', 'slug', 'production_date', 'actors', 'director')
@@ -18,10 +19,6 @@ class GenreAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'name')
     search_fields = ('id', 'name', 'slug')
 
-
-# @admin.register(Film)
-# class ProductAdmin(admin.ModelAdmin):
-#     inlines = [GalleryInline,]
 
 admin.site.register(Film, FilmsAdmin)
 admin.site.register(Genre, GenreAdmin)
