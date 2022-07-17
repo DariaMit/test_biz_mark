@@ -1,0 +1,60 @@
+{% extends 'films/base.html' %}
+
+{% block content %}
+
+
+<form method="post">
+    {% csrf_token %}
+    <p><select multiple name="sort_by">
+        <option disabled>Сортировать по:</option>
+        <option value="production_date">Дате создания</option>
+        <option value="rating">Рейтингу</option>
+    </select></p>
+    <p><select multiple name="filter_by">
+        <option disabled>Фильтровать по:</option>
+        <option value="director">Режиссёру</option>
+        <option value="actors">Актёрам</option>
+    </select></p>
+    <p><input type="submit" value="Применить сортировку"></p>
+</form>
+
+<ul>
+    {% for film in page_obj %}
+    <li>
+<!--        <div>-->
+        <h2>{{film.title}}</h2>
+        <p>Жанр: {{film.genre.name}}</p>
+        <p>Дата создания: {{film.production_date}}</p>
+        <p>Рейтинг: {{film.rating}}</p>
+<!--    </div>-->
+        {% if film.preview_photo %}
+        <p><img src="{{film.preview_photo.url}}" height="130"> </p>
+        {% endif %}
+        <div class="clear"></div>
+        <p><a href="{{ film.get_absolute_url }}">на страницу фильма</a></p>
+        {% if request.user.is_authenticated %}
+        <p><a href="{{ film.get_leave_review_url }}">оставить рецензию</a></p>
+        {% else %}
+        <p><a href="{% url 'login' %}">оставить рецензию</a></p>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+
+<nav>
+    <ul>
+        {% if page_obj.has_other_pages %}
+        {% for p in page_obj.paginator.page_range %}
+        <li>
+            <a href="?page={{ p }}">{{ p }}</a>
+        </li>
+        {% endfor %}
+        {% endif %}
+    </ul>
+</nav>
+
+{% endblock content %}
+
+
+
+

@@ -1,0 +1,55 @@
+<!--{% load static %}-->
+{% load films_tags %}
+
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<table class="table-page" border=0 cellpadding="0" cellspacing="0">
+<tr><td valign=top>
+
+{% block mainmenu %}
+		<div class="header" align="left">
+			<ul id="mainmenu" class="mainmenu">
+			<li class="logo"><a href="{% url 'home' %}"><div class="logo"></div></a></li>
+{% for m in menu %}
+	{% if not forloop.last %}
+			<li><a href="{% url m.url_name %}">{{m.title}}</a></li>
+	{% else %}
+			<li class="last"><a href="{% url m.url_name %}">{{m.title}}</a></li>
+	{% endif %}
+{% endfor %}
+				{% if request.user.is_authenticated %}
+				<li> <a href="{% url 'profile' %}">Личный кабинет</a> | <a href="{% url 'logout' %}">Выйти</a></li>
+				{% else %}
+				<li><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a></li>
+				{% endif %}
+			</ul>
+			<div class="clear"></div>
+		</div>
+{% endblock mainmenu %}
+
+
+<table class="table-content" border=0 cellpadding="0" cellspacing="0">
+<tr>
+	<td valign="top" class="left-chapters">
+	<ul id="leftchapters">
+		{% if genre_selected == 0 %}
+		<li class="selected">Все жанры</li>
+		{% else %}
+		<li><a href="{% url 'home' %}">Все жанры</a></li>
+		{% endif %}
+
+{% show_genres '-name' genre_selected %}
+
+	<div>
+{% block content %}
+{% endblock %}
+	</div>
+
+
+</td></tr></table>
+</td></tr>
+</body>
+</html>

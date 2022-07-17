@@ -1,0 +1,9 @@
+{% extends 'films/base.html' %}
+
+{% block content %}
+
+{% for r in reviews %}
+<p>Отзыв на фильм {{ r.film_title }} : {{ r.review_text }} | Оценка: {{ r.rating }}</p>
+{% endfor %}
+
+{% endblock content %}

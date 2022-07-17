@@ -1,0 +1,7 @@
+{% for genre in genres %}
+{% if genre.pk == genre_selected %}
+<li class="selected">{{ genre.name }}</li>
+{% else %}
+<li><a href="{{ genre.get_absolute_url }}">{{ genre.name }}</a></li>
+{% endif %}
+{% endfor %}

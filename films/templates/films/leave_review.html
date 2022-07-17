@@ -1,0 +1,16 @@
+{% block content %}
+
+<h1>Оставить отзыв и поставить оценку</h1>
+
+<form action="{% url 'leave_review' film_slug %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p><label class="form-label" for="{{ form.review_text.id_for_label }}">Отзыв:</label>{{form.review_text}}</p>
+    <p><label class="form-label" for="{{ form.rating.id_for_label }}">Поставьте оценку:</label>{{form.rating}}</p>
+
+    <button type="submit">Добавить</button>
+</form>
+
+
+{% endblock %}
+
+
